@@ -9,4 +9,4 @@ class RingBuffer:
         self.cur = (self.cur + 1) % self.capacity
 
     def get(self):
-        return [node for node in self.buffer if node is not None]
+        return self.buffer[self.cur:] + self.buffer[self.cur]

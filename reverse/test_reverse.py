@@ -10,7 +10,7 @@ class LinkedListTests(unittest.TestCase):
     self.assertEqual(self.list.head.value, 1)
     self.list.add_to_head(2)
     self.assertEqual(self.list.head.value, 2)
-
+  #
   def test_contains(self):
     self.list.add_to_head(1)
     self.list.add_to_head(2)
@@ -18,16 +18,16 @@ class LinkedListTests(unittest.TestCase):
     self.assertTrue(self.list.contains(2))
     self.assertTrue(self.list.contains(10))
     self.assertFalse(self.list.contains(1000))
-
+  #
   def test_empty_reverse(self):
     self.list.reverse_list(self.list.head, None)
     self.assertEqual(self.list.head, None)
-    
+  #
   def test_single_reverse(self):
     self.list.add_to_head(1)
     self.list.reverse_list(self.list.head, None)
     self.assertEqual(self.list.head.value, 1)
-
+  #
   def test_longer_reverse(self):
     self.list.add_to_head(1)
     self.list.add_to_head(2)
