@@ -1,125 +1,58 @@
-import time
-
-
-class Node:
-
-    # Nodes are represented in n
-    def __init__(self, key, val):
-        self.key = key
-        self.val = val
-        self.next = None
-        self.prev = None
+from collections import OrderedDict
 
 
 class LRUCache:
-    cache_limit = None
 
-    # if the DEBUG is TRUE then it
-    # will execute
-    DEBUG = False
+    # initialising capacity
+    def __init__(self, capacity: int):
+        self.cache = OrderedDict()
+        self.capacity = capacity
 
-    def __init__(self, func):
-        self.func = func
-        self.cache = {}
-        self.head = Node(0, 0)
-        self.tail = Node(0, 0)
-        self.head.next = self.tail
-        self.tail.prev = self.head
+    # we return the value of the key
+    # that is queried in O(1) and return -1 if we
+    # don't find the key in out dict / cache.
+    # And also move the key to the end
+    # to show that it was recently used.
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+            return -1
+        else:
+            self.cache.move_to_end(key)
+            return self.cache[key]
 
-    def __call__(self, *args, **kwargs):
+        # first, we add / update the key by conventional methods.
 
-        # The cache presents with the help
-        # of Linked List
-        if args in self.cache:
-            self.llist(args)
+    # And also move the key to the end to show that it was recently used.
+    # But here we will also check whether the length of our
+    # ordered dictionary has exceeded our capacity,
+    # If so we remove the first key (least recently used)
+    def put(self, key: int, value: int) -> None:
+        self.cache[key] = value
+        self.cache.move_to_end(key)
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)
 
-            if self.DEBUG == True:
-                return f'Cached...{args}\n{self.cache[args]}\nCache: {self.cache}'
-            return self.cache[args]
-
-            # The given cache keeps on moving.
-        if self.cache_limit is not None:
-
-            if len(self.cache) > self.cache_limit:
-                n = self.head.next
-                self._remove(n)
-                del self.cache[n.key]
-
-                # Compute and cache and node to see whether
-        # the following element is present or not
-        # based on the given input.
-        result = self.func(*args, **kwargs)
-        self.cache[args] = result
-        node = Node(args, result)
-        self.add(node)
-
-        if self.DEBUG == True:
-            return f'{result}\nCache: {self.cache}'
-        return result
-
-        # Remove from double linked-list - Node.
-
-    def _remove(self, node):
-        p = node.prev
-        n = node.next
-        p.next = n
-        n.prev = p
-
-        # Add to double linked-list - Node.
-
-    def add(self, node):
-        p = self.tail.prev
-        p.next = node
-        self.tail.prev = node
-        node.prev = p
-        node.next = self.tail
-
-        # Over here the result task is being done
-
-    def llist(self, args):
-        current = self.head
-
-        while True:
-
-            if current.key == args:
-                node = current
-                self._remove(node)
-                self.add(node)
-
-                if self.DEBUG == True:
-                    del self.cache[node.key]
-                    self.cache[node.key] = node.val
-                break
-
-            else:
-                current = current.next
+        # RUNNER
 
 
-# Default Debugging is FALSE. For
-# execution of DEBUG is set to TRUE
-LRUCache.DEBUG = True
+# initializing our cache with the capacity of 2
+cache = LRUCache(2)
 
-# The DEFAULT test limit is NONE.
-LRUCache.cache_limit = 3
-
-
-@LRUCache
-def ex_func_01(n):
-    print(f'Computing...{n}')
-    time.sleep(1)
-    return n
-
-#
-# print(f'\nFunction: ex_func_01')
-# print(ex_func_01(1))
-# print(ex_func_01(2))
-# print(ex_func_01(3))
-# print(ex_func_01(4))
-# print(ex_func_01(1))
-# print(ex_func_01(2))
-# print(ex_func_01(5))
-# print(ex_func_01(1))
-# print(ex_func_01(2))
-# print(ex_func_01(3))
-# print(ex_func_01(4))
-# print(ex_func_01(5))
+cache.put(1, 1)
+print(cache.cache)
+cache.put(2, 2)
+print(cache.cache)
+cache.get(1)
+print(cache.cache)
+cache.put(3, 3)
+print(cache.cache)
+cache.get(2)
+print(cache.cache)
+cache.put(4, 4)
+print(cache.cache)
+cache.get(1)
+print(cache.cache)
+cache.get(3)
+print(cache.cache)
+cache.get(4)
+print(cache.cache)

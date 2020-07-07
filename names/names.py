@@ -15,7 +15,6 @@ f.close()
 #
 duplicates = []  # Return the list of duplicates in this data structure
 
-
 # Replace the nested for loops below with your improvements
 # ORIGINAL runtime: 12.141798257827759 seconds
 # for name_1 in names_1:
@@ -24,22 +23,21 @@ duplicates = []  # Return the list of duplicates in this data structure
 #             duplicates.append(name_1)
 
 # BINARY SEARCH TREE
-# bst = BSTNode(" ")
-# for name in names_1:
-#     bst.insert(name)
-#
-# for name in names_2:
-#     if bst.contains(name):
-#         duplicates.append(name)
+bst = BSTNode(" ")
+for name in names_1:  # O(n)
+    bst.insert(name)  # O(n log n)
+
+for name in names_2:   # O(n)
+    if bst.contains(name):  # O(n log n)
+        duplicates.append(name)  # O(1)
 # New runtime: 0.26656484603881836 seconds
-
-
-@functools.lru_cache(maxsize=8)
-def dup(name):
-    for name in names_1:
-        duplicates.append(name)
-    return name
-
+# O(n log n)
+#
+# for name in names_1:
+#     LRUCache.put(key=1, value=0)
+# for name in names_2:
+#     if LRUCache.get:
+#         LRUCache.put(key=2, value=0)
 
 end_time = time.time()
 print(f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
@@ -52,9 +50,9 @@ print(f"runtime: {end_time - start_time} seconds")
 
 # PYTHON BUILT IN LIST FUNCTION
 # list() Returns a list;  set()	Returns a new set object
-# STRETCH = list(set(names_1) & (set(names_2)))
-# # runtime: 0.010425090789794922 seconds
-#
-# end_time = time.time()
-# print (f"{len(STRETCH)} STRETCH:\n\n{', '.join(STRETCH)}\n\n")
-# print (f"runtime: {end_time - start_time} seconds")
+STRETCH = list(set(names_1) & (set(names_2)))
+# runtime: 0.010425090789794922 seconds
+
+end_time = time.time()
+print (f"{len(STRETCH)} STRETCH:\n\n{', '.join(STRETCH)}\n\n")
+print (f"runtime: {end_time - start_time} seconds")
